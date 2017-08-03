@@ -16,6 +16,9 @@ A Digital Certificate doesn’t last for ever:
 * Revoked Certificates are placed on a
 Certificate Revocation List (CRL)
 
+## X.509 Cert Structure
+![](./certificate.jpg)
+
 ## Certificate Pinning
 
 ## Client Cert Authentication
