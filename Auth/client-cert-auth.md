@@ -1,6 +1,10 @@
 # Client Cert Authentication
 ## Overview
-Client certificate authentication (if ever applied) is carried out as part of the SSL or TLS handshake, an important process that takes place before the actual data is transmitted in a SSL or TLS session. Here's a simplified illustration that includes that part in the process.
+Client certificates as the name indicates are used to identify a client or a user. They are meant for authenticating the client to the server. In case of a client certificate the value of this field would be set to a users name.
+
+A client digital certificate or client certificate is basically a file, usually protected with a password and loaded unto a client application (usually as PKCS12 files with the .p12 or .pfx extension).
+
+Client certificate authentication (if ever applied) is carried out as part of the SSL or TLS handshake, an important process that takes place before the actual data is transmitted in a SSL or TLS session.
 
 ## SSL/TLS Handshake
 ![alt text](./assets/ssl_tls_handshake.png)

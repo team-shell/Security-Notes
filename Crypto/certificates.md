@@ -20,6 +20,7 @@ Certificate Revocation List (CRL)
 ## X.509 Cert Structure
 ![](./assets/certificate.jpg)
 
-## Certificate Pinning
+
+
 
 
