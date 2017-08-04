@@ -133,5 +133,16 @@ Finally, an organization might want to supply a reserve (or back-up) identity in
   * Easy to deploy
   * Easy to get wrong
     * Complexity, custom protocol, expirations
-  * Still ahve to pin the 'pin server'
+  * Still have to pin the 'pin server'
   * Still have to manage the pins
+
+
+## HPKP
+HTTP Public Key Pinning, or HPKP, is a security policy delivered via a HTTP response header much like HSTS and CSP. It allows a host to provide information to a user agent about which cryptographic identities it should accept from the host in the future. This can protect a host website from a security compromise at a Certificate Authority where rogue certificates may be issued for your hostname.
+
+
+### Why Do We Need HPKP?
+Any one of the Certificate Authorities (CAs) in your trust store can issue a certificate for your hostname and the browser will trust it implicitly. This is great in the sense that you can obtain a certificate from any CA of your choosing, but not so great when one gets compromised.
+
+[More Infomation](https://scotthelme.co.uk/hpkp-http-public-key-pinning/)
+
