@@ -1,7 +1,7 @@
 # Security Notes
 
 ## Auth
-* [Client Certificate Authentication](./Crypto/client-cert-auth.md)
+* [Client Certificate Authentication](./Auth/client-cert-auth.md)
 * [OAuth](./Auth/oauth.md)
 * [OAuth2](./Auth/oauth2.md)
 * [OpenID Connect](./Auth/openid-connect.md)
