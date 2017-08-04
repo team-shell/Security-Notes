@@ -1,4 +1,5 @@
 # Certificates
+
 ## Overview
 * A certificate is an electronic document that binds an entity (e.g. individual) to a public key
 * Signed by a third party called a Certificate Authority (CA)
@@ -17,8 +18,8 @@ A Digital Certificate doesn’t last for ever:
 Certificate Revocation List (CRL)
 
 ## X.509 Cert Structure
-![](./certificate.jpg)
+![](./assets/certificate.jpg)
 
 ## Certificate Pinning
 
-## Client Cert Authentication
+
