@@ -16,15 +16,22 @@ The next question, now that the scope has been defined as “I want to do the op
 
 And that brings us to Open ID Connect flows.
 
-## Go with the flow
+## OpenID Connect Flows
 
-The type of OpenID Connect flow you should use has a lot to do with the type of client you’re using and how well it can keep a secret.
+### Authorization Code Flow
+The authorization code flow returns an authorization code (like it says on the tin) that can then be exchanged for an identity token and/or access token. This requires client authentication using a client id and secret to retrieve the tokens from the back end and has the benefit of not exposing tokens to the user agent (i.e. a web browser). This flow allows for long lived access (through the use of refresh tokens). Clients using this flow must be able to maintain a secret.
 
-For example, if you’re using a JavaScript application, where anything and everything can be looked at by someone using browser development tools, and there’s no ‘back end’ logic in the web server that can do things away from the prying eyes of users… You must use the Implicit flow for OpenID Connect.
+This flow obtains the authorization code from the authorization endpoint and all tokens are returned from the token endpoint.
 
-Now, if you’re using a more traditional application, where some information is passed around on the front end (and anyone can peek at it) but it also has back end code that can talk to the provider in secret, you can use the Authentication Flow (although you don’t have to)
+### Implicit Flow
+The implicit flow requests tokens without explicit client authentication, instead using the redirect URI to verify the client identity. Because of this, refresh tokens are not allowed, nor is this flow suitable for long lived access tokens. From the client application's point of view, this is the simplest to implement, as there is only one round trip to the OpenID Connect Provider.
 
-And there’s also a Hybrid Flow, but at the end of the day, that’s just a combination of both flows.
+This flow obtains all tokens from the authorization endpoint.
+
+### Hybrid Flow
+The hybrid flow is a combination of aspects from the previous two. This flow allows the client to make immediate use of an identity token and optionally retrieve an authorization code via one round trip to the authentication server. This can be used for long lived access (again, through the use of refresh tokens). Clients using this flow must be able to maintain a secret.
+
+This flow can obtain an authorization code and tokens from the authorization endpoint, and can also request tokens from the token endpoint.
 
 ### A. Implicit Flow
 
