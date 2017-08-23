@@ -28,9 +28,9 @@ concept that processes running as separate users cannot interfere with each
 other, such as sending signals or accessing one another’s memory space. Ergo,
 much of Android’s sandbox is predicated on a few key concepts: standard
 Linux process isolation, unique user IDs (UIDs) for most processes, and tightly
-restricted fi le system permissions.
+restricted file system permissions.
 Android shares Linux’s UID/group ID (GID) paradigm, but does not have the
-traditional passwd and group fi les for its source of user and group credentials. 
+traditional passwd and group files for its source of user and group credentials. 
 
 * When applications execute, their UID, GID, and supplementary groups are
 assigned to the newly created process. Running under a unique UID and GID
@@ -40,14 +40,14 @@ Android sandbox. Applications can also share UIDs, by way of a special directive
 application package. 
 
 ## Android Permissions
-* The Android permissions model is multifaceted: There are API permissions, fi le
+* The Android permissions model is multifaceted: There are API permissions, file
 system permissions, and IPC permissions. Oftentimes, there is an intertwining
 of each of these. As previously mentioned, some high-level permissions map
 back to lower-level OS capabilities. This could include actions such as opening
-sockets, Bluetooth devices, and certain fi le system paths.
+sockets, Bluetooth devices, and certain file system paths.
 To determine the app user’s rights and supplemental groups, Android processes
 high-level permissions specifi ed in an app package’s AndroidManifest
-.xml fi le (the manifest and permissions are covered in more detail in the “Major
+.xml file (the manifest and permissions are covered in more detail in the “Major
 Application Components” section). Applications’ permissions are extracted from
 the application’s manifest at install time by the PackageManager and stored in
 `/data/system/packages.xml`. 
@@ -81,21 +81,58 @@ installer="com.android.vending">
 </package>
 ```
 
-* The permission-to-group mappings are stored in `/etc/permissions/
-platform.xml`. These are used to determine supplemental group IDs to set for
-the application. The following snippet shows some of these mappings:
+* The permission-to-group mappings are stored in `/etc/permissions/platform.xml`. These are used to determine supplemental group IDs to set for the application. The following snippet shows some of these mappings:
 
 ```
- <permission name="android.permission.INTERNET" >
- <group gid="inet" />
- </permission>
- <permission name="android.permission.CAMERA" >
- <group gid="camera" />
- </permission>
- <permission name="android.permission.READ_LOGS" >
- <group gid="log" />
- </permission>
- <permission name="android.permission.WRITE_EXTERNAL_STORAGE" >
- <group gid="sdcard_rw" />
- </permission>
+<permission name="android.permission.INTERNET" >
+<group gid="inet" />
+</permission>
+<permission name="android.permission.CAMERA" >
+<group gid="camera" />
+</permission>
+<permission name="android.permission.READ_LOGS" >
+<group gid="log" />
+</permission>
+<permission name="android.permission.WRITE_EXTERNAL_STORAGE" >
+<group gid="sdcard_rw" />
+</permission>
  ```
+* The rights defined in package entries are later enforced in one of two ways.
+The first type of checking is done at the time of a given method invocation and
+is enforced by the runtime. The second type of checking is enforced at a lower
+level within the OS by a library or the kernel itself.
+ 
+## API Permissions
+* API permissions include those that are used for controlling access to highlevel
+functionality within the Android API/framework and, in some cases,
+third-party frameworks. An example of a common API permission is
+`READ_PHONE_STATE`, which is defined in the Android documentation as allowing
+“read only access to phone state.” An app that requests and is subsequently
+granted this permission would therefore be able to call a variety of methods
+related to querying phone information. This would include methods in
+the TelephonyManager class, like getDeviceSoftwareVersion, getDeviceId,
+getDeviceId and more.
+
+* As mentioned earlier, some API permissions correspond to kernel-level enforcement
+mechanisms. For example, being granted the `INTERNET` permission means
+the requesting app’s UID is added as a member of the inet group (GID 3003).
+Membership in this group grants the user the ability to open AF_INET and
+AF_INET6 sockets, which is needed for higher-level API functionality, such as
+creating an HttpURLConnection object.
+
+## File System Permissions
+Android’s application sandbox is heavily supported by tight Unix file system
+permissions. Applications’ unique UIDs and GIDs are, by default, given access
+only to their respective data storage paths on the fi le system. Note the UIDs
+and GIDs (in the second and third columns) in the following directory listing.
+They are unique for these directories, and their permissions are such that only
+those UIDs and GIDs may access the contents therein:
+
+```
+root@android:/data/data/com.twitter.android # ls -lR
+.:
+drwxrwx--x u0_a55 u0_a55 2013-10-17 00:07 cache
+drwxrwx--x u0_a55 u0_a55 2013-10-17 00:07 databases
+drwxrwx--x u0_a55 u0_a55 2013-10-17 00:07 files
+lrwxrwxrwx install install 2013-10-22 18:16 lib -> 
+```
