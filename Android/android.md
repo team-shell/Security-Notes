@@ -171,7 +171,7 @@ permissions it defines)
 installation location, and UI info (such as the launcher icon for the
 application)
 
-* One particularly interesting part of the manifest is the sharedUserId attribute.
+* One particularly interesting part of the manifest is the `sharedUserId` attribute.
 Simply put, when two applications are signed by the same key, they can
 specify an identical user identifier in their respective manifests. In this case,
 both applications execute under the same UID. This subsequently allows these
